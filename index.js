@@ -1,15 +1,20 @@
+require('dotenv').config();
 const express = require('express');
-const { resolve } = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
-const port = 3010;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.static('static'));
+// MongoDB Connection (Updated Code)
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB Connected Successfully!"))
+    .catch(err => console.error("MongoDB Connection Failed:", err));
 
 app.get('/', (req, res) => {
-  res.sendFile(resolve(__dirname, 'pages/index.html'));
+    res.send('Express Server is running and MongoDB is connected!');
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(PORT,() => {
+
+    console.log(`Server is running on port ${PORT}`);
 });
